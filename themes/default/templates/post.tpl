@@ -19,6 +19,18 @@
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="submit_crest" name="submit_crest" type="submit" value="Process !" />
       </form>
       <br/><hr><br/>
+      <b><u>Upload CREST File:</u></b>
+      <p>Upload a JSON file containing an array of CREST kill report entries</p>
+      <br />
+      <b>File:</b>
+      <form id="postform" name="postform" class="f_killmail" method="post" action="{$kb_host}/?a=post" enctype="multipart/form-data">
+      <input type="file" name="crest_file" id="crest_file" class="f_killmail" size="100">
+      {if !$isadmin && $crest_pw_needed}
+        <br /><br /><b>Password:</b><br /><input id="password_crest" name="password_crest" type="password" />
+      {/if}
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="submit_crest" name="submit_crest" type="submit" value="Process !" />
+      </form>
+      <br/><hr><br/>
     {/if}
 
     {if !$post_forbid}
@@ -39,4 +51,3 @@
   {/if}
 {/if}
 </div>
-
