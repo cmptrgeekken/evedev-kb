@@ -23,7 +23,11 @@ else {
 	elseif (isset($_POST['submit_crest']) && isset($_POST['crest_url'])) {
                 $html = post_crest();
 	}
+    elseif (isset($_POST['submit_crest']) && isset($_FILES['crest_file'])) {        
+        $html = post_crest_file();
+    }
 }
+
 
 if (isset($html)) {
 	$smarty->assign('error', $html);
@@ -158,5 +162,37 @@ function post_crest()
     }
     return $html;
 }
-?>
 
+function post_crest_file()
+{
+    global $page;
+
+    if ($_FILES['crest_file']['error'] == UPLOAD_ERR_OK
+        && is_uploaded_file($_FILES['crest_file']['tmp_name'])) {
+            $file = file_get_contents($_FILES['crest_file']['tmp_name']);
+    }
+    
+    if (!$file) {
+        $html = "Error parsing uploaded file!";
+        return $html;
+    }
+    
+    $html = strlen($file) + " is how long the file is!";
+    
+    $CrestFileParser = new CrestFileParser($file);
+
+    try
+    {
+        $loggedkills = $CrestFileParser->parse();
+        
+        $html = "$loggedkills kills added to database!";
+    }
+    catch(CrestParserException $e) {
+        $html .= $e->getMessage();
+        return $html;
+    }
+
+    return $html;
+}
+
+?>
